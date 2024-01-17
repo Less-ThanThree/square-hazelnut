@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cte7gruduicat"]
+
+[ext_resource type="Script" path="res://PlayerPhisics.gd" id="1_1524p"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_r3672"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b4j0d"]
+
+[node name="Player" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0)
+script = ExtResource("1_1524p")
+
+[node name="PlayerCamera" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(-0.0646393, 0.937772, -1.76533, 0.0343144, 1.76652, 0.937144, 1.99866, 1.86389e-09, -0.0731828, -3.59664, 2.5168, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_r3672")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_b4j0d")
