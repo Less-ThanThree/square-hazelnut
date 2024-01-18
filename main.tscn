@@ -1,32 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://fkxf0248keo4"]
+[gd_scene load_steps=7 format=3 uid="uid://fkxf0248keo4"]
 
-[ext_resource type="PackedScene" uid="uid://cte7gruduicat" path="res://player.tscn" id="1_ugd2e"]
+[ext_resource type="PackedScene" uid="uid://cte7gruduicat" path="res://scenes/player/player.tscn" id="1_ugd2e"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_j2kck"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_v5keh"]
+sky_material = SubResource("ProceduralSkyMaterial_j2kck")
+
+[sub_resource type="Environment" id="Environment_skbwv"]
+background_mode = 2
+sky = SubResource("Sky_v5keh")
+tonemap_mode = 2
+sdfgi_enabled = true
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(1, 1, 1, 1)
+fog_density = 0.005
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_abfir"]
+size = Vector2(20, 20)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_pm2jv"]
-size = Vector3(1.98083, 0.499634, 1.98926)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_dc4gx"]
+data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0, -10, 10, 0, -10)
 
 [node name="Main" type="Node3D"]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(3.62121, 0, 0, 0, 1, 0, 0, 0, 2.77701, 0, 0, -1)
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_skbwv")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(3.98164, 0, 0, 0, 1, 0, 0, 0, 4.00065, 0, 0, 0)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 20.538, 0)
+shadow_enabled = true
+
+[node name="StaticField" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticField"]
 mesh = SubResource("PlaneMesh_abfir")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(3.98164, 0, 0, 0, 1, 0, 0, 0, 4.00065, -0.0138521, -0.250183, 0.0332085)
-shape = SubResource("BoxShape3D_pm2jv")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticField"]
+shape = SubResource("ConcavePolygonShape3D_dc4gx")
 
-[node name="Player" parent="." instance=ExtResource("1_ugd2e")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.299003, 0)
-
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-4.21468e-08, -0.707107, 0.707107, -4.21468e-08, 0.707107, 0.707107, -1, 0, -5.96046e-08, 6, 5, 0)
-current = true
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -0.424847, 0.905265, 0, -0.905265, -0.424847, 0, 10.4878, -8.74142)
+[node name="CharacterBody3D" parent="StaticField" instance=ExtResource("1_ugd2e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
