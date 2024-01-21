@@ -21,21 +21,26 @@ func _input(event):
 		cameraMount.rotate_x(-deg_to_rad(event.relative.y * VerticalSensitivity))
 
 func _physics_process(delta):
+	
+	# Получаем вектор движения игрока
+	var inputDirection = Input.get_vector("Move_left", "Move_right", "Move_forward", "Move_down")
+	var direction = (transform.basis * Vector3(inputDirection.x, 0, inputDirection.y)).normalized()
+	
 	# Считаем вектр падения каждый кадр
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 		
 	if Input.is_action_pressed("Jump") and is_on_floor():
 		velocity.y = JumpVelocity
-	
-	if Input.is_action_pressed("Move_forward") or Input.is_action_pressed("Move_down") or Input.is_action_pressed("Move_left") or Input.is_action_pressed("Move_right"):
+		playerAnimation.set_current_animation("Jump")
+		playerAnimation.speed_scale = 1.5
+	elif (Input.is_action_pressed("Move_forward") and is_on_floor()) or (Input.is_action_pressed("Move_down") and is_on_floor()) or (Input.is_action_pressed("Move_left") and is_on_floor()) or (Input.is_action_pressed("Move_right") and is_on_floor()):
 		playerAnimation.set_current_animation("Move")
-	else:
+		playerAnimation.speed_scale = 2
+	
+	if inputDirection == Vector2(0, 0) and velocity.y == 0:
 		playerAnimation.set_current_animation("idle")
-		
-	# Получаем вектор движения игрока
-	var inputDirection = Input.get_vector("Move_left", "Move_right", "Move_forward", "Move_down")
-	var direction = (transform.basis * Vector3(inputDirection.x, 0, inputDirection.y)).normalized()
+		playerAnimation.speed_scale = 0.5
 	
 	if direction:
 		visuals.look_at(position + direction)
