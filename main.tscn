@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://fkxf0248keo4"]
+[gd_scene load_steps=8 format=3 uid="uid://fkxf0248keo4"]
 
 [ext_resource type="PackedScene" uid="uid://cte7gruduicat" path="res://scenes/player/player.tscn" id="1_ugd2e"]
+[ext_resource type="PackedScene" uid="uid://c65wv52iu02yd" path="res://Boost.tscn" id="2_tcjtu"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_j2kck"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -45,3 +46,21 @@ shape = SubResource("ConcavePolygonShape3D_dc4gx")
 
 [node name="CharacterBody3D" parent="StaticField" instance=ExtResource("1_ugd2e")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Boost3" parent="." instance=ExtResource("2_tcjtu")]
+transform = Transform3D(4.56976, 0, 0, 0, 1, 0, 0, 0, 11.7188, 2.58401, 2, 3.875)
+
+[node name="Boost3" parent="Boost3" instance=ExtResource("2_tcjtu")]
+transform = Transform3D(1.37093, 0, 0, 0, 1, 0, 0, 0, 0.820312, -0.041947, 0, -0.818333)
+
+[node name="Boost2" parent="." instance=ExtResource("2_tcjtu")]
+transform = Transform3D(6.76, 0, 0, 0, 1, 0, 0, 0, 6.25, -1.6, 1, 5.5)
+
+[node name="Boost" parent="." instance=ExtResource("2_tcjtu")]
+transform = Transform3D(2.6, 0, 0, 0, 1, 0, 0, 0, 2.5, -6, 0, 5)
+
+[node name="Boost2" parent="Boost" instance=ExtResource("2_tcjtu")]
+transform = Transform3D(2.028, 0, 0, 0, 1, 0, 0, 0, 2, 1.86, 1, -5.07)
+
+[node name="Boost" parent="Boost" instance=ExtResource("2_tcjtu")]
+transform = Transform3D(0.78, 0, 0, 0, 1, 0, 0, 0, 0.8, 0.540001, 0, -5.23)
