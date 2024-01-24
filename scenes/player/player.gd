@@ -58,6 +58,7 @@ func _physics_process(delta):
 		if(climbing()):
 			# Место где персонаж поднимается
 			velocity.y = 1 * ClimbingSpeed
+			player_animation.set_current_animation("Climb")
 	else:
 		velocity.x = move_toward(velocity.x, 0, current_speed)
 		velocity.z = move_toward(velocity.z, 0, current_speed)
