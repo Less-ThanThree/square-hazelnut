@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://cte7gruduicat"]
+
+[ext_resource type="Script" path="res://scenes/player/player.gd" id="1_t0byr"]
+[ext_resource type="PackedScene" uid="uid://xe37r2p6c88k" path="res://models/PlayerGirl/LowPolyGirlAnimation.glb" id="2_3j8t0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0yo80"]
+radius = 0.284237
+
+[node name="CharacterBody3D" type="CharacterBody3D" groups=["player"]]
+collision_mask = 3
+script = ExtResource("1_t0byr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.946522, 0)
+shape = SubResource("CapsuleShape3D_0yo80")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="LowPolyGirlAnimation" parent="Visuals" instance=ExtResource("2_3j8t0")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+
+[node name="CameraMount" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48349, 0)
+
+[node name="PlayerCamera" type="Camera3D" parent="CameraMount"]
+transform = Transform3D(1, 0, 0, 0, 0.808185, 0.588928, 0, -0.588928, 0.808185, 0, 3.02588, 4.20286)
+fov = 70.0
+
+[node name="ClimbingMount" type="Node3D" parent="."]
