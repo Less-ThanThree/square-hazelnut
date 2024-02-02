@@ -1,17 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://cte7gruduicat"]
+[gd_scene load_steps=10 format=3 uid="uid://cte7gruduicat"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_t0byr"]
 [ext_resource type="PackedScene" uid="uid://xe37r2p6c88k" path="res://models/PlayerGirl/LowPolyGirlAnimation.glb" id="2_g5ko7"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_ick0b"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="4_5t5xg"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_l47c7"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_jew16"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_wvmlh"]
+[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="8_wfj88"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0yo80"]
 radius = 0.284237
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0458035, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.110975, 0)
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_t0byr")
-MovementSpeed = 4.5
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01573, 0)
@@ -30,3 +35,79 @@ transform = Transform3D(1, 0, 0, 0, 0.808185, 0.588928, 0, -0.588928, 0.808185, 
 fov = 70.0
 
 [node name="ClimbingMount" type="Node3D" parent="."]
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_ick0b")
+track_in_editor = true
+
+[node name="Root" type="Node" parent="StateChart"]
+script = ExtResource("4_5t5xg")
+
+[node name="Movement" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_l47c7")
+initial_state = NodePath("Grounded")
+
+[node name="Grounded" type="Node" parent="StateChart/Root/Movement"]
+script = ExtResource("6_jew16")
+
+[node name="On jump" type="Node" parent="StateChart/Root/Movement/Grounded"]
+script = ExtResource("7_wvmlh")
+to = NodePath("../../Airborne/DoubleJump")
+event = &"jump"
+
+[node name="On airborne" type="Node" parent="StateChart/Root/Movement/Grounded"]
+script = ExtResource("7_wvmlh")
+to = NodePath("../../Airborne")
+event = &"airborne"
+
+[node name="Airborne" type="Node" parent="StateChart/Root/Movement"]
+script = ExtResource("5_l47c7")
+initial_state = NodePath("DoubleJump")
+
+[node name="DoubleJump" type="Node" parent="StateChart/Root/Movement/Airborne"]
+script = ExtResource("6_jew16")
+
+[node name="On jump" type="Node" parent="StateChart/Root/Movement/Airborne/DoubleJump"]
+script = ExtResource("7_wvmlh")
+to = NodePath("../../CannotJump")
+event = &"jump"
+
+[node name="CannotJump" type="Node" parent="StateChart/Root/Movement/Airborne"]
+script = ExtResource("6_jew16")
+
+[node name="On grounded" type="Node" parent="StateChart/Root/Movement/Airborne"]
+script = ExtResource("7_wvmlh")
+to = NodePath("../../Grounded")
+event = &"grounded"
+
+[node name="Control" type="Node" parent="StateChart/Root"]
+script = ExtResource("5_l47c7")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/Root/Control"]
+script = ExtResource("6_jew16")
+
+[node name="On move" type="Node" parent="StateChart/Root/Control/Idle"]
+script = ExtResource("7_wvmlh")
+to = NodePath("../../Move")
+event = &"move"
+
+[node name="Move" type="Node" parent="StateChart/Root/Control"]
+script = ExtResource("6_jew16")
+
+[node name="On idle" type="Node" parent="StateChart/Root/Control/Move"]
+script = ExtResource("7_wvmlh")
+to = NodePath("../../Idle")
+event = &"idle"
+
+[node name="StateChartDebugger" parent="." instance=ExtResource("8_wfj88")]
+anchors_preset = 11
+anchor_left = 1.0
+offset_left = -281.0
+offset_top = 86.0
+offset_bottom = -227.0
+grow_horizontal = 0
+initial_node_to_watch = NodePath("../StateChart")
+
+[connection signal="state_physics_processing" from="StateChart/Root/Movement/Grounded" to="." method="_on_jump_enabled_state_physics_process"]
+[connection signal="state_physics_processing" from="StateChart/Root/Movement/Airborne" to="." method="_on_airborne_state_physics_processing"]
