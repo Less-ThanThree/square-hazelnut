@@ -2,30 +2,79 @@
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_t0byr"]
 [ext_resource type="PackedScene" uid="uid://xe37r2p6c88k" path="res://models/PlayerGirl/LowPolyGirlAnimation.glb" id="2_g5ko7"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_ick0b"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="4_5t5xg"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_l47c7"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_jew16"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_wvmlh"]
-[ext_resource type="PackedScene" uid="uid://bcwkugn6v3oy7" path="res://addons/godot_state_charts/utilities/state_chart_debugger.tscn" id="8_wfj88"]
+[ext_resource type="Script" path="res://scripts/state_machine.gd" id="3_o1eea"]
+[ext_resource type="Script" path="res://scenes/player/states/PlayerIdle.gd" id="4_glp5f"]
+[ext_resource type="Script" path="res://scenes/player/states/PlayerWalk.gd" id="5_bfyih"]
+[ext_resource type="Theme" uid="uid://b43v0mcnvalhs" path="res://ui_themes/debug.tres" id="6_fa0wb"]
+[ext_resource type="Script" path="res://scripts/debug.gd" id="7_v5uo7"]
+[ext_resource type="Script" path="res://scenes/player/states/PlayerRun.gd" id="8_mqbec"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0yo80"]
 radius = 0.284237
 
 [node name="CharacterBody3D" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.110975, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 collision_layer = 0
 collision_mask = 3
 script = ExtResource("1_t0byr")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01573, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1, 2.08165e-12)
 shape = SubResource("CapsuleShape3D_0yo80")
 
 [node name="Visuals" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0308148, 0)
 
 [node name="LowPolyGirlAnimation" parent="Visuals" instance=ExtResource("2_g5ko7")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+transform = Transform3D(-0.5, 4.37114e-08, 1.74393e-16, -4.37114e-08, -0.5, -1.74393e-16, 1.74393e-16, -1.74393e-16, 0.5, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Visuals/LowPolyGirlAnimation/Armature" index="0"]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, 0, 0)
+bones/0/position = Vector3(0.0149452, -1.20824, -182.146)
+bones/0/rotation = Quaternion(-0.707122, -0.000373296, -0.000396504, 0.707091)
+bones/1/rotation = Quaternion(-0.0393705, -3.78401e-05, 0.000543262, 0.999225)
+bones/4/rotation = Quaternion(0.0393924, 1.77774e-15, 2.45221e-17, 0.999224)
+bones/7/rotation = Quaternion(-0.507193, -0.491164, 0.51124, -0.490048)
+bones/8/rotation = Quaternion(0.459082, 0.0233271, 0.0775609, 0.884694)
+bones/9/rotation = Quaternion(0.199507, -0.00193089, 0.0376729, 0.97917)
+bones/10/rotation = Quaternion(-0.00372319, 0.112809, 0.000423064, 0.99361)
+bones/11/position = Vector3(-3.67741, 4.49095, 2.44378e-06)
+bones/11/rotation = Quaternion(0.169504, 0.0611523, 0.288941, 0.940235)
+bones/12/position = Vector3(-0.0295196, 4.64343, 5.00818e-06)
+bones/12/rotation = Quaternion(0.000310676, -0.00607985, -0.0446348, 0.998985)
+bones/13/rotation = Quaternion(9.7555e-07, 0.000155518, 0.100422, 0.994945)
+bones/14/position = Vector3(0.495132, 4.67403, 4.76834e-07)
+bones/15/rotation = Quaternion(0.00374673, 0.00143841, -0.000104869, 0.999992)
+bones/16/position = Vector3(-0.00158703, 7.27291, -7.06723e-06)
+bones/16/rotation = Quaternion(-1.22087e-07, -6.00486e-07, -0.000255653, 1)
+bones/17/position = Vector3(-0.00441509, 6.01863, -1.14997e-05)
+bones/17/rotation = Quaternion(2.07166e-07, -3.29559e-07, 0.00083552, 1)
+bones/18/position = Vector3(0.00600624, 6.3852, 4.12762e-06)
+bones/19/rotation = Quaternion(0.508573, -0.490208, 0.510034, 0.490831)
+bones/20/position = Vector3(-4.26208e-07, 22.8426, 4.67607e-06)
+bones/20/rotation = Quaternion(0.459899, -0.0107913, -0.135125, 0.877563)
+bones/21/rotation = Quaternion(0.184089, 0.0178516, -0.0331965, 0.982187)
+bones/22/position = Vector3(1.70469e-07, 59.6583, -3.32578e-06)
+bones/22/rotation = Quaternion(-0.00179014, -0.135724, -0.000244807, 0.990745)
+bones/23/position = Vector3(3.7199, 4.66306, -6.07962e-06)
+bones/23/rotation = Quaternion(0.153755, -0.0519263, -0.310007, 0.936781)
+bones/24/position = Vector3(-0.104946, 4.77088, 1.33193e-05)
+bones/24/rotation = Quaternion(7.97871e-05, 0.00286686, 0.0496197, 0.998764)
+bones/25/position = Vector3(0.36321, 4.68963, -3.38538e-06)
+bones/25/rotation = Quaternion(9.90416e-06, 0.000976781, -0.067105, 0.997745)
+bones/26/position = Vector3(-0.258279, 4.5253, -1.57356e-05)
+bones/27/position = Vector3(5.86347e-06, 10.7124, 0.0386776)
+bones/27/rotation = Quaternion(0.00180996, -0.000453429, -0.00663257, 0.999976)
+bones/28/rotation = Quaternion(3.09338e-05, 0.00182305, 0.0304411, 0.999535)
+bones/29/rotation = Quaternion(-1.23229e-05, -0.00127186, -0.0380502, 0.999275)
+bones/30/position = Vector3(-0.191092, 6.70582, 1.43871e-05)
+bones/31/rotation = Quaternion(-0.000202163, -0.00706743, 0.999962, 0.00510586)
+bones/32/rotation = Quaternion(-0.0115175, 0.00063586, 0.012979, 0.999849)
+bones/33/rotation = Quaternion(0.517801, 0.0878944, -0.0664422, 0.848376)
+bones/34/position = Vector3(-8.14094e-07, 25.1464, 1.62166e-06)
+bones/36/rotation = Quaternion(0.000192739, 0.00420675, 0.999972, -0.00616274)
+bones/37/rotation = Quaternion(-0.0501869, -0.000423646, -0.0128916, 0.998657)
+bones/38/rotation = Quaternion(0.537981, -0.0892685, 0.0657119, 0.835637)
 
 [node name="CameraMount" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.48349, 0)
@@ -36,78 +85,40 @@ fov = 70.0
 
 [node name="ClimbingMount" type="Node3D" parent="."]
 
-[node name="StateChart" type="Node" parent="."]
-script = ExtResource("3_ick0b")
-track_in_editor = true
+[node name="Interface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="Root" type="Node" parent="StateChart"]
-script = ExtResource("4_5t5xg")
+[node name="DebugPanel" type="PanelContainer" parent="Interface"]
+custom_minimum_size = Vector2(200, 2.08165e-12)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+theme = ExtResource("6_fa0wb")
+script = ExtResource("7_v5uo7")
 
-[node name="Movement" type="Node" parent="StateChart/Root"]
-script = ExtResource("5_l47c7")
-initial_state = NodePath("Grounded")
+[node name="MarginContainer" type="MarginContainer" parent="Interface/DebugPanel"]
+layout_mode = 2
 
-[node name="Grounded" type="Node" parent="StateChart/Root/Movement"]
-script = ExtResource("6_jew16")
+[node name="VBoxContainer" type="VBoxContainer" parent="Interface/DebugPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 
-[node name="On jump" type="Node" parent="StateChart/Root/Movement/Grounded"]
-script = ExtResource("7_wvmlh")
-to = NodePath("../../Airborne/DoubleJump")
-event = &"jump"
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("CURRENT_STATE")]
+script = ExtResource("3_o1eea")
+CURRENT_STATE = NodePath("PlayerIdle")
 
-[node name="On airborne" type="Node" parent="StateChart/Root/Movement/Grounded"]
-script = ExtResource("7_wvmlh")
-to = NodePath("../../Airborne")
-event = &"airborne"
+[node name="PlayerIdle" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("4_glp5f")
 
-[node name="Airborne" type="Node" parent="StateChart/Root/Movement"]
-script = ExtResource("5_l47c7")
-initial_state = NodePath("DoubleJump")
+[node name="PlayerWalk" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("5_bfyih")
 
-[node name="DoubleJump" type="Node" parent="StateChart/Root/Movement/Airborne"]
-script = ExtResource("6_jew16")
+[node name="PlayerRun" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("8_mqbec")
 
-[node name="On jump" type="Node" parent="StateChart/Root/Movement/Airborne/DoubleJump"]
-script = ExtResource("7_wvmlh")
-to = NodePath("../../CannotJump")
-event = &"jump"
-
-[node name="CannotJump" type="Node" parent="StateChart/Root/Movement/Airborne"]
-script = ExtResource("6_jew16")
-
-[node name="On grounded" type="Node" parent="StateChart/Root/Movement/Airborne"]
-script = ExtResource("7_wvmlh")
-to = NodePath("../../Grounded")
-event = &"grounded"
-
-[node name="Control" type="Node" parent="StateChart/Root"]
-script = ExtResource("5_l47c7")
-initial_state = NodePath("Idle")
-
-[node name="Idle" type="Node" parent="StateChart/Root/Control"]
-script = ExtResource("6_jew16")
-
-[node name="On move" type="Node" parent="StateChart/Root/Control/Idle"]
-script = ExtResource("7_wvmlh")
-to = NodePath("../../Move")
-event = &"move"
-
-[node name="Move" type="Node" parent="StateChart/Root/Control"]
-script = ExtResource("6_jew16")
-
-[node name="On idle" type="Node" parent="StateChart/Root/Control/Move"]
-script = ExtResource("7_wvmlh")
-to = NodePath("../../Idle")
-event = &"idle"
-
-[node name="StateChartDebugger" parent="." instance=ExtResource("8_wfj88")]
-anchors_preset = 11
-anchor_left = 1.0
-offset_left = -281.0
-offset_top = 86.0
-offset_bottom = -227.0
-grow_horizontal = 0
-initial_node_to_watch = NodePath("../StateChart")
-
-[connection signal="state_physics_processing" from="StateChart/Root/Movement/Grounded" to="." method="_on_jump_enabled_state_physics_process"]
-[connection signal="state_physics_processing" from="StateChart/Root/Movement/Airborne" to="." method="_on_airborne_state_physics_processing"]
+[editable path="Visuals/LowPolyGirlAnimation"]
